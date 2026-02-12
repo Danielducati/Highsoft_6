@@ -120,42 +120,6 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
         <Card className="border-gray-200 shadow-xl">
           <CardContent className="p-8">
             <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* Tipo de Cédula */}
-          <div className="space-y-2">
-            <Label className="text-gray-900">
-              Tipo de Cédula *
-            </Label>
-
-            <Select
-              value={formData.tipocedula}
-              onValueChange={(value) => handleChange("tipocedula", value)}
-            >
-              <SelectTrigger className="h-11 rounded-lg border-gray-200">
-                <SelectValue placeholder="Seleccione una opción" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="CC">Cédula de Ciudadanía</SelectItem>
-                <SelectItem value="TI">Tarjeta de Identidad</SelectItem>
-                <SelectItem value="CE">Cédula de Extranjería</SelectItem>
-                <SelectItem value="PAS">Pasaporte</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          {/* Cédula */}
-          <div className="space-y-2">
-            <Label htmlFor="cedula" className="text-gray-900">
-              Cédula *
-            </Label>
-            <Input
-              id="cedula"
-              type="text"
-              value={formData.cedula}
-              onChange={(e) => handleChange("cedula", e.target.value)}
-              placeholder="1234567890"
-              className="rounded-lg border-gray-200 h-11"
-            />
-          </div>
               {/* Nombre y Apellidos */}
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="text-gray-900">
@@ -200,7 +164,42 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
                   className="rounded-lg border-gray-200 h-11"
                 />
               </div>
+              {/* Tipo de Cédula */}
+              <div className="space-y-2">
+                <Label className="text-gray-900">
+                  Tipo de Cédula *
+                </Label>
 
+                <Select
+                  value={formData.tipocedula}
+                  onValueChange={(value) => handleChange("tipocedula", value)}
+                >
+                  <SelectTrigger className="h-11 rounded-lg border-gray-200">
+                    <SelectValue placeholder="Seleccione una opción" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="CC">Cédula de Ciudadanía</SelectItem>
+                    <SelectItem value="TI">Tarjeta de Identidad</SelectItem>
+                    <SelectItem value="CE">Cédula de Extranjería</SelectItem>
+                    <SelectItem value="PAS">Pasaporte</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Cédula */}
+              <div className="space-y-2">
+                <Label htmlFor="cedula" className="text-gray-900">
+                  Cédula *
+                </Label>
+                <Input
+                  id="cedula"
+                  type="text"
+                  value={formData.cedula}
+                  onChange={(e) => handleChange("cedula", e.target.value)}
+                  placeholder="1234567890"
+                  className="rounded-lg border-gray-200 h-11"
+                />
+              </div>
               {/* Contraseña */}
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-900">
