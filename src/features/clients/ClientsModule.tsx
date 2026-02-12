@@ -13,7 +13,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Plus, Search, Filter, User, Mail, Phone, TrendingUp, Edit, Trash2, Eye, ShoppingBag, MapPin, AlertCircle, Upload, Image as ImageIcon, X } from "lucide-react";
 import { toast } from "sonner";
 
-import { ImageWithFallback } from "../../guidelines/figma/ImageWithFallback";
+import { ImageWithFallback } from "../guidelines/figma/ImageWithFallback";
 
 
 interface Client {
@@ -537,11 +537,7 @@ export function ClientsModule({ userRole }: ClientsModuleProps) {
                 <div className="lg:col-span-2">
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <ShoppingBag className="w-3 h-3 text-gray-400" />
-                    <span className="text-sm text-gray-900">{client.totalVisits} visitas</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <TrendingUp className="w-3 h-3 text-gray-400" />
-                    <span className="text-xs text-gray-600">${client.totalSpent.toLocaleString()}</span>
+                    <span className="text-sm text-gray-900">{client.totalVisits} Servicios</span>
                   </div>
                 </div>
 

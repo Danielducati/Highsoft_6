@@ -53,7 +53,7 @@ interface Appointment {
   totalDuration: number;
   startTime: string;
   endTime: string;
-  status: 'confirmed' | 'pending' | 'cancelled' | 'completed';
+  status:  'pending' | 'cancelled' | 'completed';
   notes?: string;
 }
 
@@ -115,7 +115,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
       totalDuration: 60,
       startTime: "10:00",
       endTime: "11:00",
-      status: "confirmed",
+      status: "pending",
       notes: "Cliente prefiere música suave"
     },
     {
@@ -164,7 +164,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
       totalDuration: 90,
       startTime: "11:00",
       endTime: "12:30",
-      status: "confirmed"
+      status: "pending"
     }
   ]);
 
@@ -248,7 +248,6 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      "confirmed": "bg-emerald-100 text-emerald-700",
       "pending": "bg-amber-100 text-amber-700",
       "cancelled": "bg-red-100 text-red-700",
       "completed": "bg-blue-100 text-blue-700"
@@ -258,7 +257,6 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
 
   const getStatusLabel = (status: string) => {
     const labels: Record<string, string> = {
-      "confirmed": "Confirmada",
       "pending": "Pendiente",
       "cancelled": "Cancelada",
       "completed": "Completada"
@@ -558,7 +556,6 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                   <SelectContent>
                     <SelectItem value="all">Todos</SelectItem>
                     <SelectItem value="pending">Pendientes</SelectItem>
-                    <SelectItem value="confirmed">Confirmadas</SelectItem>
                     <SelectItem value="completed">Completadas</SelectItem>
                     <SelectItem value="cancelled">Canceladas</SelectItem>
                   </SelectContent>
@@ -824,7 +821,6 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                             height: `${getAppointmentCellSpan(firstAppointment) * 50 - 4}px`,
                             backgroundColor: (() => {
                               const statusColors = {
-                                confirmed: '#10B98120',
                                 pending: '#F59E0B20',
                                 cancelled: '#EF444420',
                                 completed: '#3B82F620'
@@ -833,7 +829,6 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                             })(),
                             borderLeftColor: (() => {
                               const statusBorderColors = {
-                                confirmed: '#10B981',
                                 pending: '#F59E0B',
                                 cancelled: '#EF4444',
                                 completed: '#3B82F6'
@@ -954,7 +949,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
               <div className="space-y-2">
                 <p className="text-xs text-gray-600">Estado de la Cita</p>
                 <div className="flex items-center gap-2 flex-wrap">
-                  {(['confirmed', 'pending', 'completed', 'cancelled'] as const).map((status) => (
+                  {(['pending', 'completed', 'cancelled'] as const).map((status) => (
                     <button
                       key={status}
                       onClick={() => {

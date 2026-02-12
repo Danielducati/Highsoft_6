@@ -16,7 +16,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell }
 import { Plus, Pencil, Trash2, Search, Eye, Users, Filter, Star, Briefcase, ImageIcon, X, Upload, Clock, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
-import { ImageWithFallback } from "../../guidelines/figma/ImageWithFallback";
+import { ImageWithFallback } from "../guidelines/figma/ImageWithFallback";
 import { Avatar, AvatarFallback } from "../../shared/ui/avatar";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../../shared/ui/alert-dialog";
 

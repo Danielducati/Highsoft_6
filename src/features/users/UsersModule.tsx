@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../shared/ui/select";
 import { Switch } from "../../shared/ui/switch";
 import { Checkbox } from "../../shared/ui/checkbox";
-import { ImageWithFallback } from "../../guidelines/figma/ImageWithFallback";
+import { ImageWithFallback } from "../guidelines/figma/ImageWithFallback";
 
 interface User {
   id: number;
