@@ -6,6 +6,7 @@ import { Card, CardContent } from "../../shared/ui/card";
 
 import { Sparkles, ArrowLeft, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../shared/ui/select";
 
 
 interface RegisterPageProps {
@@ -18,8 +19,10 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
     fullName: "",
     email: "",
     phone: "",
+    tipocedula: "",
     cedula: "",
     password: "",
+    confirmPassword: "",
   });
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -28,8 +31,13 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
     e.preventDefault();
     
     // Validación
-    if (!formData.fullName || !formData.email || !formData.phone || !formData.cedula || !formData.password) {
+    if (!formData.fullName || !formData.email || !formData.phone || !formData.tipocedula|| !formData.cedula || !formData.password|| !formData.confirmPassword) {
       toast.error("Por favor completa todos los campos");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Las contraseñas no coinciden");
       return;
     }
 
@@ -111,17 +119,17 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
         <Card className="border-gray-200 shadow-xl">
           <CardContent className="p-8">
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Nombre completo */}
+              {/* Nombre y Apellidos */}
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="text-gray-900">
-                  Nombre Completo *
+                  Nombre y Apellidos *
                 </Label>
                 <Input
                   id="fullName"
                   type="text"
                   value={formData.fullName}
                   onChange={(e) => handleChange("fullName", e.target.value)}
-                  placeholder="Ingresa tu nombre completo"
+                  placeholder="Ingresa tu nombre y apellidos"
                   className="rounded-lg border-gray-200 h-11"
                 />
               </div>
@@ -154,6 +162,28 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
                   placeholder="+57 300 123 4567"
                   className="rounded-lg border-gray-200 h-11"
                 />
+              </div>
+
+              {/* Tipo de Cédula */}
+              <div className="space-y-2">
+                <Label className="text-gray-900">
+                  Tipo de Cédula *
+                </Label>
+
+                <Select
+                  value={formData.tipocedula}
+                  onValueChange={(value) => handleChange("tipocedula", value)}
+                >
+                  <SelectTrigger className="h-11 rounded-lg border-gray-200">
+                    <SelectValue placeholder="Seleccione una opción" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="CC">Cédula de Ciudadanía</SelectItem>
+                    <SelectItem value="TI">Tarjeta de Identidad</SelectItem>
+                    <SelectItem value="CE">Cédula de Extranjería</SelectItem>
+                    <SelectItem value="PAS">Pasaporte</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Cédula */}
@@ -199,10 +229,39 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
                 </div>
               </div>
 
-              {/* Botón Registrar */}
+              {/* Confirmar Contraseña */}
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword" className="text-gray-900">
+                  Confirmar Contraseña *
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    value={formData.confirmPassword}
+                    onChange={(e) => handleChange("confirmPassword", e.target.value)}
+                    placeholder="Confirma tu contraseña"
+                    className="rounded-lg border-gray-200 h-11 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+               {/* Botón de registro */}         
               <Button
                 type="submit"
-                className="w-full h-11 rounded-lg bg-gradient-to-r from-[#007BFF] to-[#0056b3] hover:from-[#0056b3] hover:to-[#004085] text-white shadow-md transition-all"
+                variant="default"
+                className="w-full h-11 rounded-lg !bg-[#00aae4] hover:!bg-[#0095c7] !text-white"
               >
                 Registrar
               </Button>

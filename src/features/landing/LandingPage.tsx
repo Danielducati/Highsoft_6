@@ -1,7 +1,7 @@
 import { Button } from "../../shared/ui/button";
 import { Card, CardContent } from "../../shared/ui/card";
 import { Sparkles, Users, Star, Award, Phone, Mail, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
-import { ImageWithFallback } from "../../guidelines/figma/ImageWithFallback";
+import { ImageWithFallback } from "../guidelines/figma/ImageWithFallback";
 
 interface LandingPageProps {
   onNavigate: (page: string) => void;
@@ -92,14 +92,14 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-primary" />
-                    <span className="text-2xl text-foreground">500+</span>
+                    <span className="text-2xl text-foreground">100+</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Clientes Satisfechos</p>
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <Award className="w-5 h-5 text-primary" />
-                    <span className="text-2xl text-foreground">15+</span>
+                    <span className="text-2xl text-foreground">10+</span>
                   </div>
                   <p className="text-sm text-muted-foreground">Servicios Premium</p>
                 </div>
@@ -179,17 +179,13 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 se encuentra con la relajación. Nuestro equipo de profesionales altamente capacitados 
                 se dedica a proporcionar experiencias transformadoras que nutren el cuerpo, la mente y el espíritu.
               </p>
-              <p className="text-lg text-muted-foreground">
-                Con instalaciones de última generación y productos de la más alta calidad, 
-                garantizamos que cada visita sea una experiencia memorable.
-              </p>
               <div className="flex gap-4 pt-4">
                 <div className="space-y-1">
-                  <p className="text-3xl text-primary">10+</p>
+                  <p className="text-3xl text-primary">2+</p>
                   <p className="text-sm text-muted-foreground">Años de experiencia</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-3xl text-primary">20+</p>
+                  <p className="text-3xl text-primary">6+</p>
                   <p className="text-sm text-muted-foreground">Especialistas certificados</p>
                 </div>
               </div>
@@ -214,7 +210,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               <div className="pt-8">
                 <div className="rounded-2xl overflow-hidden">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1717500252010-d708ec89a0a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWxsbmVzcyUyMGNlbnRlciUyMGFtYmlhbmNlfGVufDF8fHx8MTc2MDU3MzYyNHww&ixlib=rb-4.1.0&q=80&w=1080"
+                    src="https://st.depositphotos.com/3584053/54659/i/450/depositphotos_546598946-stock-photo-after-shave-irritation-barber-shop.jpg"
                     alt="Wellness center"
                     className="w-full h-80 object-cover"
                   />

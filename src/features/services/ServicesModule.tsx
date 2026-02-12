@@ -11,7 +11,7 @@ import { Switch } from "../../shared/ui/switch";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../../shared/ui/alert-dialog";
 import { Plus, Pencil, Trash2, Search, DollarSign, Clock, Upload, Image as ImageIcon, X, AlertCircle, Tag, Save, Eye } from "lucide-react";
 import { toast } from "sonner";
-import { ImageWithFallback } from "../../guidelines/figma/ImageWithFallback";
+import { ImageWithFallback } from "../guidelines/figma/ImageWithFallback";
 
 interface Service {
   id: number;
