@@ -45,7 +45,7 @@ interface Sale {
   discount: number;
   total: number;
   paymentMethod: string;
-  status: 'completed' | 'cancelled' | 'refunded';
+  status: 'completed';
   appointmentId?: number;
 }
 
@@ -58,7 +58,7 @@ interface Appointment {
   date: Date;
   time: string;
   duration: number;
-  status: 'confirmed' | 'pending' | 'cancelled' | 'completed';
+  status: 'confirmed' | 'pending' | 'completed';
   notes?: string;
 }
 
@@ -208,7 +208,7 @@ export function SalesModule({ userRole }: SalesModuleProps) {
       discount: 0,
       total: 75,
       paymentMethod: "Tarjeta de Débito",
-      status: "cancelled"
+      status: "completed"
     },
   ]);
 
@@ -415,10 +415,8 @@ export function SalesModule({ userRole }: SalesModuleProps) {
 
   const handleCancelSale = () => {
     if (saleToDelete) {
-      setSales(sales.map(sale => 
-        sale.id === saleToDelete ? { ...sale, status: 'cancelled' as const } : sale
-      ));
-      toast.success("Venta anulada exitosamente");
+      setSales(sales.filter(sale => sale.id !== saleToDelete));
+      toast.success("Venta eliminada exitosamente");
       setDeleteDialogOpen(false);
       setSaleToDelete(null);
     }
@@ -426,18 +424,14 @@ export function SalesModule({ userRole }: SalesModuleProps) {
 
   const getStatusColor = (status: Sale['status']) => {
     const colors = {
-      completed: "bg-emerald-100 text-emerald-700",
-      cancelled: "bg-red-100 text-red-700",
-      refunded: "bg-amber-100 text-amber-700"
+      completed: "bg-emerald-100 text-emerald-700"
     };
     return colors[status];
   };
 
   const getStatusLabel = (status: Sale['status']) => {
     const labels = {
-      completed: "Completada",
-      cancelled: "Anulada",
-      refunded: "Reembolsada"
+      completed: "Completada"
     };
     return labels[status];
   };
@@ -705,8 +699,6 @@ export function SalesModule({ userRole }: SalesModuleProps) {
                 <SelectContent>
                   <SelectItem value="all">Todos</SelectItem>
                   <SelectItem value="completed">Completadas</SelectItem>
-                  <SelectItem value="cancelled">Anuladas</SelectItem>
-                  <SelectItem value="refunded">Reembolsadas</SelectItem>
                 </SelectContent>
               </Select>
               <Select value={filterPayment} onValueChange={handlePaymentFilterChange}>
@@ -800,15 +792,6 @@ export function SalesModule({ userRole }: SalesModuleProps) {
                   >
                     <Download className="w-4 h-4" />
                   </button>
-                  {userRole !== 'client' && sale.status === 'completed' && (
-                    <button
-                      onClick={() => confirmCancelSale(sale.id)}
-                      className="p-1 hover:bg-red-50 rounded text-red-600 transition-colors"
-                      title="Anular venta"
-                    >
-                      <XCircle className="w-4 h-4" />
-                    </button>
-                  )}
                 </div>
               </div>
             </div>

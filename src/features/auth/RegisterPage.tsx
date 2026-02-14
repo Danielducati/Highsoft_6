@@ -115,6 +115,7 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
           </div>
         </div>
 
+
         {/* Form Card */}
         <Card className="border-gray-200 shadow-xl">
           <CardContent className="p-8">
@@ -163,7 +164,6 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
                   className="rounded-lg border-gray-200 h-11"
                 />
               </div>
-
               {/* Tipo de Cédula */}
               <div className="space-y-2">
                 <Label className="text-gray-900">
@@ -200,7 +200,6 @@ export function RegisterPage({ onBack, onRegisterSuccess }: RegisterPageProps) {
                   className="rounded-lg border-gray-200 h-11"
                 />
               </div>
-
               {/* Contraseña */}
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-900">

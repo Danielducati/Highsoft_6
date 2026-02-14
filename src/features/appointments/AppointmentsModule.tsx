@@ -821,7 +821,6 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                             height: `${getAppointmentCellSpan(firstAppointment) * 50 - 4}px`,
                             backgroundColor: (() => {
                               const statusColors = {
-                                confirmed: '#10B98120',
                                 pending: '#F59E0B20',
                                 cancelled: '#EF444420',
                                 completed: '#3B82F620'
@@ -830,7 +829,6 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                             })(),
                             borderLeftColor: (() => {
                               const statusBorderColors = {
-                                confirmed: '#10B981',
                                 pending: '#F59E0B',
                                 cancelled: '#EF4444',
                                 completed: '#3B82F6'
