@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+
 
 import { Card, CardContent } from "../../shared/ui/card";
 import { Button } from "../../shared/ui/button";
@@ -61,6 +63,8 @@ interface AppointmentsModuleProps {
   userRole: 'admin' | 'employee' | 'client';
 }
 
+
+
 export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
   // Datos de servicios
   const services: Service[] = [
@@ -95,6 +99,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
     { id: 5, name: "Carmen López", phone: "+57 311 222 3333" },
   ];
 
+  //Datos quemados
   // Estados
   const [appointments, setAppointments] = useState<Appointment[]>([
     {
@@ -167,6 +172,31 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
       status: "completed"
     }
   ]);
+
+useEffect(() => {
+  fetch("http://localhost:3001/api/appointments")
+    .then(res => res.json())
+    .then(data => {
+      const mappedAppointments = data.map((item: any) => ({
+        id: item.PK_id_cita,
+        clientName: "Cliente desde DB",
+        clientPhone: "",
+        date: new Date(item.Fecha),
+        startTime: item.Horario,
+        endTime: item.Horario,
+        status: item.Estado?.toLowerCase() || "pending",
+        services: [],
+        totalDuration: 0,
+        notes: ""
+      }));
+
+      setAppointments(mappedAppointments);
+    })
+    .catch(err => console.error(err));
+}, []);
+
+
+
 
   const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const today = new Date(2025, 10, 17);
@@ -329,43 +359,60 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
   };
 
   // Crear o actualizar cita
-  const handleCreateOrUpdate = () => {
-    if (!formData.clientId || !formData.startTime || selectedServices.length === 0) {
-      toast.error("Por favor completa todos los campos y agrega al menos un servicio");
-      return;
-    }
+  const handleCreateOrUpdate = async () => {
+  if (!formData.clientId || !formData.startTime || selectedServices.length === 0) {
+    toast.error("Completa todos los campos");
+    return;
+  }
 
-    const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0);
-    const endTime = calculateEndTime(formData.startTime, totalDuration);
+  try {
+    const nuevaCita = {
+      empleadoId: 1, // luego lo hacemos dinámico
+      servicioId: 1, // luego lo hacemos dinámico
+      fecha: formData.date.toISOString().split("T")[0],
+      horario: formData.startTime,
+      notas: formData.notes
+    };
 
-    if (editingAppointment) {
-      setAppointments(appointments.map(apt =>
-        apt.id === editingAppointment.id
-          ? {
-              ...apt,
-              ...formData,
-              services: selectedServices,
-              totalDuration,
-              endTime,
-            }
-          : apt
-      ));
-      toast.success("Cita actualizada exitosamente");
-    } else {
-      const newAppointment: Appointment = {
-        id: Math.max(...appointments.map(a => a.id), 0) + 1,
-        ...formData,
-        services: selectedServices,
-        totalDuration,
-        endTime,
-        status: "pending"
-      };
-      setAppointments([...appointments, newAppointment]);
-      toast.success("Cita creada exitosamente");
-    }
+    const res = await fetch("http://localhost:3001/api/appointments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(nuevaCita)
+    });
+
+    if (!res.ok) throw new Error("Error al guardar");
+
+    toast.success("Cita guardada en la base de datos");
+
+    // 🔄 recargar citas desde DB
+    const updated = await fetch("http://localhost:3001/api/appointments");
+    const data = await updated.json();
+
+    const mappedAppointments = data.map((item: any) => ({
+      id: item.PK_id_cita,
+      clientName: "Cliente desde DB",
+      clientPhone: "",
+      date: new Date(item.Fecha),
+      startTime: item.Horario,
+      endTime: item.Horario,
+      status: item.Estado?.toLowerCase() || "pending",
+      services: [],
+      totalDuration: 0,
+      notes: ""
+    }));
+
+    setAppointments(mappedAppointments);
 
     resetForm();
-  };
+
+  } catch (err) {
+    console.error(err);
+    toast.error("Error al guardar cita");
+  }
+};
+
 
   const resetForm = () => {
     setIsDialogOpen(false);
