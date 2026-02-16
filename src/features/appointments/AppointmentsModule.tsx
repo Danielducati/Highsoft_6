@@ -67,133 +67,180 @@ interface AppointmentsModuleProps {
 
 export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
   // Datos de servicios
-  const services: Service[] = [
-    { id: "s1", name: "Masaje Relajante", category: "Masajes", duration: 60, price: 80000 },
-    { id: "s2", name: "Masaje Deportivo", category: "Masajes", duration: 90, price: 120000 },
-    { id: "s3", name: "Masaje Piedras Calientes", category: "Masajes", duration: 75, price: 100000 },
-    { id: "s4", name: "Tratamiento Facial Básico", category: "Faciales", duration: 45, price: 65000 },
-    { id: "s5", name: "Tratamiento Facial Premium", category: "Faciales", duration: 90, price: 110000 },
-    { id: "s6", name: "Limpieza Profunda", category: "Faciales", duration: 60, price: 75000 },
-    { id: "s7", name: "Manicure", category: "Estética", duration: 45, price: 40000 },
-    { id: "s8", name: "Pedicure", category: "Estética", duration: 60, price: 50000 },
-    { id: "s9", name: "Depilación Piernas", category: "Estética", duration: 40, price: 45000 },
-    { id: "s10", name: "Aromaterapia", category: "Terapias", duration: 60, price: 70000 },
-    { id: "s11", name: "Reflexología", category: "Terapias", duration: 50, price: 60000 },
-  ];
+  const [services, setServices] = useState([]);
+
+useEffect(() => {
+  fetch("http://localhost:3001/services")
+    .then(response => response.json())
+    .then(data => setServices(data))
+    .catch(error => console.error("Error fetching services:", error));
+}, []);
+  //Datos quemados
+  // const services: Service[] = [
+  //   { id: "s1", name: "Masaje Relajante", category: "Masajes", duration: 60, price: 80000 },
+  //   { id: "s2", name: "Masaje Deportivo", category: "Masajes", duration: 90, price: 120000 },
+  //   { id: "s3", name: "Masaje Piedras Calientes", category: "Masajes", duration: 75, price: 100000 },
+  //   { id: "s4", name: "Tratamiento Facial Básico", category: "Faciales", duration: 45, price: 65000 },
+  //   { id: "s5", name: "Tratamiento Facial Premium", category: "Faciales", duration: 90, price: 110000 },
+  //   { id: "s6", name: "Limpieza Profunda", category: "Faciales", duration: 60, price: 75000 },
+  //   { id: "s7", name: "Manicure", category: "Estética", duration: 45, price: 40000 },
+  //   { id: "s8", name: "Pedicure", category: "Estética", duration: 60, price: 50000 },
+  //   { id: "s9", name: "Depilación Piernas", category: "Estética", duration: 40, price: 45000 },
+  //   { id: "s10", name: "Aromaterapia", category: "Terapias", duration: 60, price: 70000 },
+  //   { id: "s11", name: "Reflexología", category: "Terapias", duration: 50, price: 60000 },
+  // ];
+
 
   // Datos de empleados
-  const employees: Employee[] = [
-    { id: "e1", name: "Ana María García", specialty: "Masajes", color: "#78D1BD" },
-    { id: "e2", name: "Carlos Rodríguez", specialty: "Masajes", color: "#60A5FA" },
-    { id: "e3", name: "Laura Martínez", specialty: "Faciales", color: "#FBBF24" },
-    { id: "e4", name: "David López", specialty: "Faciales", color: "#F87171" },
-    { id: "e5", name: "María González", specialty: "Estética", color: "#A78BFA" },
-    { id: "e6", name: "Roberto Silva", specialty: "Terapias", color: "#EC4899" },
-  ];
+const [employees, setEmployees] = useState([]);
 
-  const clients = [
-    { id: 1, name: "Laura Sánchez", phone: "+57 310 123 4567" },
-    { id: 2, name: "Pedro Ramírez", phone: "+57 320 987 6543" },
-    { id: 3, name: "Sofia Torres", phone: "+57 315 555 1234" },
-    { id: 4, name: "Miguel Ángel Castro", phone: "+57 300 444 7890" },
-    { id: 5, name: "Carmen López", phone: "+57 311 222 3333" },
-  ];
+useEffect(() => {
+  fetch("http://localhost:3001/employees")
+    .then(response => response.json())
+    .then(data => setEmployees(data))
+    .catch(error => {
+      console.error("Error fetching employees:", error);
+    });
+}, []);
+
+  // const employees: Employee[] = [
+  //   { id: "e1", name: "Ana María García", specialty: "Masajes", color: "#78D1BD" },
+  //   { id: "e2", name: "Carlos Rodríguez", specialty: "Masajes", color: "#60A5FA" },
+  //   { id: "e3", name: "Laura Martínez", specialty: "Faciales", color: "#FBBF24" },
+  //   { id: "e4", name: "David López", specialty: "Faciales", color: "#F87171" },
+  //   { id: "e5", name: "María González", specialty: "Estética", color: "#A78BFA" },
+  //   { id: "e6", name: "Roberto Silva", specialty: "Terapias", color: "#EC4899" },
+  // ];
+
+
+
+
+  const [clients, setClients] = useState([]);
+  
+  useEffect(() => {
+  fetch("http://localhost:3001/clients")
+    .then(response => response.json())
+    .then(data => setClients(data))
+    .catch(error => {
+      console.error("Error fetching clients:", error);
+    });
+}, []);
+
+
+
+
+
+
+  // const clients = [
+  //   { id: 1, name: "Laura Sánchez", phone: "+57 310 123 4567" },
+  //   { id: 2, name: "Pedro Ramírez", phone: "+57 320 987 6543" },
+  //   { id: 3, name: "Sofia Torres", phone: "+57 315 555 1234" },
+  //   { id: 4, name: "Miguel Ángel Castro", phone: "+57 300 444 7890" },
+  //   { id: 5, name: "Carmen López", phone: "+57 311 222 3333" },
+  // ];
 
   //Datos quemados
   // Estados
-  const [appointments, setAppointments] = useState<Appointment[]>([
-    {
-      id: 1,
-      clientName: "Laura Sánchez",
-      clientPhone: "+57 310 123 4567",
-      date: new Date(2025, 10, 17),
-      services: [
-        {
-          serviceId: "s1",
-          serviceName: "Masaje Relajante",
-          employeeId: "e1",
-          employeeName: "Ana María García",
-          duration: 60,
-          startTime: "10:00"
-        }
-      ],
-      totalDuration: 60,
-      startTime: "10:00",
-      endTime: "11:00",
-      status: "completed",
-      notes: "Cliente prefiere música suave"
-    },
-    {
-      id: 2,
-      clientName: "Pedro Ramírez",
-      clientPhone: "+57 320 987 6543",
-      date: new Date(2025, 10, 17),
-      services: [
-        {
-          serviceId: "s4",
-          serviceName: "Tratamiento Facial Básico",
-          employeeId: "e3",
-          employeeName: "Laura Martínez",
-          duration: 45,
-          startTime: "14:00"
-        },
-        {
-          serviceId: "s7",
-          serviceName: "Manicure",
-          employeeId: "e5",
-          employeeName: "María González",
-          duration: 45,
-          startTime: "15:00"
-        }
-      ],
-      totalDuration: 90,
-      startTime: "14:00",
-      endTime: "15:30",
-      status: "pending"
-    },
-    {
-      id: 3,
-      clientName: "Sofia Torres",
-      clientPhone: "+57 315 555 1234",
-      date: new Date(2025, 10, 18),
-      services: [
-        {
-          serviceId: "s2",
-          serviceName: "Masaje Deportivo",
-          employeeId: "e2",
-          employeeName: "Carlos Rodríguez",
-          duration: 90,
-          startTime: "11:00"
-        }
-      ],
-      totalDuration: 90,
-      startTime: "11:00",
-      endTime: "12:30",
-      status: "completed"
-    }
-  ]);
-
-useEffect(() => {
-  fetch("http://localhost:3001/api/appointments")
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  useEffect(() => {
+  fetch("http://localhost:3001/appointments")
     .then(res => res.json())
     .then(data => {
-      const mappedAppointments = data.map((item: any) => ({
+      const mapped = data.map((item: any) => ({
         id: item.PK_id_cita,
-        clientName: "Cliente desde DB",
+        clientName: "Cliente",
         clientPhone: "",
         date: new Date(item.Fecha),
-        startTime: item.Horario,
-        endTime: item.Horario,
-        status: item.Estado?.toLowerCase() || "pending",
-        services: [],
-        totalDuration: 0,
-        notes: ""
+        startTime: item.Horario.slice(0,5),
+        endTime: item.Horario.slice(0,5),
+        status: (item.Estado || "Pendiente").toLowerCase(),
+        services: [{
+          serviceId: "db",
+          serviceName: "Servicio",
+          employeeId: "db",
+          employeeName: "Empleado",
+          duration: 60,
+          startTime: item.Horario.slice(0,5)
+        }],
+        totalDuration: 60,
+        notes: item.Notas || ""
       }));
 
-      setAppointments(mappedAppointments);
+      setAppointments(mapped);
     })
     .catch(err => console.error(err));
 }, []);
+  // const [appointments, setAppointments] = useState<Appointment[]>([
+  //   {
+  //     id: 1,
+  //     clientName: "Laura Sánchez",
+  //     clientPhone: "+57 310 123 4567",
+  //     date: new Date(2025, 10, 17),
+  //     services: [
+  //       {
+  //         serviceId: "s1",
+  //         serviceName: "Masaje Relajante",
+  //         employeeId: "e1",
+  //         employeeName: "Ana María García",
+  //         duration: 60,
+  //         startTime: "10:00"
+  //       }
+  //     ],
+  //     totalDuration: 60,
+  //     startTime: "10:00",
+  //     endTime: "11:00",
+  //     status: "completed",
+  //     notes: "Cliente prefiere música suave"
+  //   },
+  //   {
+  //     id: 2,
+  //     clientName: "Pedro Ramírez",
+  //     clientPhone: "+57 320 987 6543",
+  //     date: new Date(2025, 10, 17),
+  //     services: [
+  //       {
+  //         serviceId: "s4",
+  //         serviceName: "Tratamiento Facial Básico",
+  //         employeeId: "e3",
+  //         employeeName: "Laura Martínez",
+  //         duration: 45,
+  //         startTime: "14:00"
+  //       },
+  //       {
+  //         serviceId: "s7",
+  //         serviceName: "Manicure",
+  //         employeeId: "e5",
+  //         employeeName: "María González",
+  //         duration: 45,
+  //         startTime: "15:00"
+  //       }
+  //     ],
+  //     totalDuration: 90,
+  //     startTime: "14:00",
+  //     endTime: "15:30",
+  //     status: "pending"
+  //   },
+  //   {
+  //     id: 3,
+  //     clientName: "Sofia Torres",
+  //     clientPhone: "+57 315 555 1234",
+  //     date: new Date(2025, 10, 18),
+  //     services: [
+  //       {
+  //         serviceId: "s2",
+  //         serviceName: "Masaje Deportivo",
+  //         employeeId: "e2",
+  //         employeeName: "Carlos Rodríguez",
+  //         duration: 90,
+  //         startTime: "11:00"
+  //       }
+  //     ],
+  //     totalDuration: 90,
+  //     startTime: "11:00",
+  //     endTime: "12:30",
+  //     status: "completed"
+  //   }
+  // ]);
 
 
 
@@ -367,12 +414,12 @@ useEffect(() => {
 
   try {
     const nuevaCita = {
-      empleadoId: 1, // luego lo hacemos dinámico
-      servicioId: 1, // luego lo hacemos dinámico
+      empleado: 1,
+      servicio: 1,
       fecha: formData.date.toISOString().split("T")[0],
-      horario: formData.startTime,
-      notas: formData.notes
+      hora: formData.startTime
     };
+
 
     const res = await fetch("http://localhost:3001/api/appointments", {
       method: "POST",
@@ -387,7 +434,7 @@ useEffect(() => {
     toast.success("Cita guardada en la base de datos");
 
     // 🔄 recargar citas desde DB
-    const updated = await fetch("http://localhost:3001/api/appointments");
+    const updated = await fetch("http://localhost:3001/appointments");
     const data = await updated.json();
 
     const mappedAppointments = data.map((item: any) => ({
@@ -398,8 +445,16 @@ useEffect(() => {
       startTime: item.Horario,
       endTime: item.Horario,
       status: item.Estado?.toLowerCase() || "pending",
-      services: [],
-      totalDuration: 0,
+      //--------------Datos de prueba-----------------
+      services: [{
+      serviceId: "db",
+      serviceName: "Servicio desde DB",
+      employeeId: "db",
+      employeeName: "Empleado DB",
+      duration: 60,
+      endTime: calculateEndTime(item.Horario, 60),
+    }],
+      totalDuration: 60,
       notes: ""
     }));
 
