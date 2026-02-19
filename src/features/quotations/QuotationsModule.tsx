@@ -38,223 +38,22 @@ interface QuotationsModuleProps {
   userRole: 'admin' | 'employee' | 'client';
 }
 
+
 export function QuotationsModule({ userRole }: QuotationsModuleProps) {
   // Mock de empleados disponibles con horarios ocupados
-  const availableEmployees = [
-    { 
-      id: 1, 
-      name: "Ana María García", 
-      specialty: "Masajes Terapéuticos",
-      busySlots: [
-        { date: "2025-11-05", time: "09:00" },
-        { date: "2025-11-05", time: "14:00" },
-        { date: "2025-11-06", time: "10:00" },
-      ]
-    },
-    { 
-      id: 2, 
-      name: "Carlos Rodríguez", 
-      specialty: "Tratamientos Faciales",
-      busySlots: [
-        { date: "2025-11-05", time: "11:00" },
-        { date: "2025-11-06", time: "15:00" },
-      ]
-    },
-    { 
-      id: 3, 
-      name: "Laura Martínez", 
-      specialty: "Manicure & Pedicure",
-      busySlots: [
-        { date: "2025-11-05", time: "08:00" },
-        { date: "2025-11-05", time: "16:00" },
-      ]
-    },
-    { 
-      id: 4, 
-      name: "Pedro Sánchez", 
-      specialty: "Aromaterapia",
-      busySlots: [
-        { date: "2025-11-06", time: "09:00" },
-        { date: "2025-11-07", time: "14:00" },
-      ]
-    },
-  ];
+  const [availableEmployees, setAvailableEmployees] = useState<any[]>([]);
+
 
   // Mock de clientes
-  const clients = [
-    { id: 1, name: "Laura Sánchez", phone: "+57 310 123 4567", email: "laura@ejemplo.com" },
-    { id: 2, name: "Pedro Ramírez", phone: "+57 320 987 6543", email: "pedro@ejemplo.com" },
-    { id: 3, name: "Sofia Torres", phone: "+57 315 555 1234", email: "sofia@ejemplo.com" },
-    { id: 4, name: "Carlos Mendoza", phone: "+57 300 444 7890", email: "carlos@ejemplo.com" },
-    { id: 5, name: "María González", phone: "+57 311 222 3333", email: "maria@ejemplo.com" },
-  ];
+  const [clients, setClients] = useState<any[]>([]);
+
 
   // Horarios disponibles
-  const timeSlots = [
-    "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
-    "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
-    "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
-    "17:00", "17:30", "18:00", "18:30"
-  ];
+  const timeSlots: string[] = [];
+
 
   const [quotations, setQuotations] = useState<Quotation[]>([
-    {
-      id: 1,
-      clientName: "Laura Sánchez",
-      clientEmail: "laura@ejemplo.com",
-      date: "2025-10-15",
-      items: [
-        { serviceId: 1, serviceName: "Masaje Sueco Premium", price: 120, quantity: 1, employeeId: 1, employeeName: "Ana María García", serviceDate: "2025-11-10" },
-        { serviceId: 2, serviceName: "Tratamiento Facial", price: 95, quantity: 1, employeeId: 2, employeeName: "Carlos Rodríguez", serviceDate: "2025-11-11" }
-      ],
-      subtotal: 215,
-      discount: 10,
-      total: 205,
-      status: "pending",
-      notes: "Cliente solicita horario vespertino"
-    },
-    {
-      id: 2,
-      clientName: "Pedro Ramírez",
-      clientEmail: "pedro@ejemplo.com",
-      date: "2025-10-14",
-      items: [
-        { serviceId: 3, serviceName: "Aromaterapia Completa", price: 110, quantity: 2, employeeId: 4, employeeName: "Pedro Sánchez", serviceDate: "2025-11-12" }
-      ],
-      subtotal: 220,
-      discount: 0,
-      total: 220,
-      status: "approved",
-      notes: ""
-    },
-    {
-      id: 3,
-      clientName: "Sofia Torres",
-      clientEmail: "sofia@ejemplo.com",
-      date: "2025-10-12",
-      items: [
-        { serviceId: 4, serviceName: "Manicure & Pedicure", price: 75, quantity: 1, employeeId: 3, employeeName: "Laura Martínez", serviceDate: "2025-11-10" },
-        { serviceId: 5, serviceName: "Spa Bar Experience", price: 25, quantity: 1, employeeId: 1, employeeName: "Ana María García", serviceDate: "2025-11-10" }
-      ],
-      subtotal: 100,
-      discount: 5,
-      total: 95,
-      status: "rejected",
-      notes: ""
-    },
-    {
-      id: 4,
-      clientName: "Carlos Mendoza",
-      clientEmail: "carlos@ejemplo.com",
-      date: "2025-10-10",
-      items: [
-        { serviceId: 1, serviceName: "Masaje Sueco Premium", price: 120, quantity: 2, employeeId: 1, employeeName: "Ana María García", serviceDate: "2025-11-12" },
-      ],
-      subtotal: 240,
-      discount: 20,
-      total: 220,
-      status: "approved",
-      notes: "Cliente frecuente - descuento aplicado"
-    },
-    {
-      id: 5,
-      clientName: "María González",
-      clientEmail: "maria@ejemplo.com",
-      date: "2025-10-08",
-      items: [
-        { serviceId: 2, serviceName: "Tratamiento Facial Hidratante", price: 95, quantity: 1, employeeId: 2, employeeName: "Carlos Rodríguez", serviceDate: "2025-11-13" }
-      ],
-      subtotal: 95,
-      discount: 0,
-      total: 95,
-      status: "pending",
-      notes: ""
-    },
-    {
-      id: 6,
-      clientName: "Roberto Díaz",
-      clientEmail: "roberto@ejemplo.com",
-      date: "2025-10-07",
-      items: [
-        { serviceId: 4, serviceName: "Manicure & Pedicure Deluxe", price: 75, quantity: 1, employeeId: 3, employeeName: "Laura Martínez", serviceDate: "2025-11-14" }
-      ],
-      subtotal: 75,
-      discount: 5,
-      total: 70,
-      status: "approved",
-      notes: ""
-    },
-    {
-      id: 7,
-      clientName: "Isabel Fernández",
-      clientEmail: "isabel@ejemplo.com",
-      date: "2025-10-06",
-      items: [
-        { serviceId: 3, serviceName: "Aromaterapia Completa", price: 110, quantity: 1, employeeId: 4, employeeName: "Pedro Sánchez", serviceDate: "2025-11-15" }
-      ],
-      subtotal: 110,
-      discount: 0,
-      total: 110,
-      status: "pending",
-      notes: ""
-    },
-    {
-      id: 8,
-      clientName: "Luis Hernández",
-      clientEmail: "luis@ejemplo.com",
-      date: "2025-10-05",
-      items: [
-        { serviceId: 1, serviceName: "Masaje Sueco Premium", price: 120, quantity: 1, employeeId: 1, employeeName: "Ana María García", serviceDate: "2025-11-15" }
-      ],
-      subtotal: 120,
-      discount: 10,
-      total: 110,
-      status: "approved",
-      notes: ""
-    },
-    {
-      id: 9,
-      clientName: "Carmen Ruiz",
-      clientEmail: "carmen@ejemplo.com",
-      date: "2025-10-04",
-      items: [
-        { serviceId: 2, serviceName: "Tratamiento Facial Hidratante", price: 95, quantity: 1, employeeId: 2, employeeName: "Carlos Rodríguez", serviceDate: "2025-11-16" }
-      ],
-      subtotal: 95,
-      discount: 0,
-      total: 95,
-      status: "cancelled",
-      notes: "Cliente canceló"
-    },
-    {
-      id: 10,
-      clientName: "David López",
-      clientEmail: "david@ejemplo.com",
-      date: "2025-10-03",
-      items: [
-        { serviceId: 5, serviceName: "Spa Bar Experience", price: 25, quantity: 2, employeeId: 1, employeeName: "Ana María García", serviceDate: "2025-11-10" }
-      ],
-      subtotal: 50,
-      discount: 0,
-      total: 50,
-      status: "pending",
-      notes: ""
-    },
-    {
-      id: 11,
-      clientName: "Elena Morales",
-      clientEmail: "elena@ejemplo.com",
-      date: "2025-10-02",
-      items: [
-        { serviceId: 4, serviceName: "Manicure & Pedicure Deluxe", price: 75, quantity: 1, employeeId: 3, employeeName: "Laura Martínez", serviceDate: "2025-11-17" }
-      ],
-      subtotal: 75,
-      discount: 5,
-      total: 70,
-      status: "approved",
-      notes: ""
-    },
-  ]);
+]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -363,7 +162,7 @@ export function QuotationsModule({ userRole }: QuotationsModuleProps) {
 
     // Verificar si el empleado tiene ocupado ese horario
     const isBusy = employee.busySlots.some(
-      slot => slot.date === date && slot.time === time
+      (      slot: { date: string; time: string; }) => slot.date === date && slot.time === time
     );
 
     return !isBusy;

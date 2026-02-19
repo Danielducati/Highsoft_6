@@ -18,6 +18,7 @@ import {Plus,ChevronLeft,ChevronRight,Clock,User,Trash2,Edit,CalendarIcon,X,Sear
 } from "lucide-react";
 
 import { toast } from "sonner";
+import { ClientsModule } from "../clients/ClientsModule";
 
 // Tipos
 interface Service {
@@ -62,112 +63,15 @@ interface AppointmentsModuleProps {
 }
 
 export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+
+
   // Datos de servicios
   const services: Service[] = [
-    { id: "s1", name: "Masaje Relajante", category: "Masajes", duration: 60, price: 80000 },
-    { id: "s2", name: "Masaje Deportivo", category: "Masajes", duration: 90, price: 120000 },
-    { id: "s3", name: "Masaje Piedras Calientes", category: "Masajes", duration: 75, price: 100000 },
-    { id: "s4", name: "Tratamiento Facial Básico", category: "Faciales", duration: 45, price: 65000 },
-    { id: "s5", name: "Tratamiento Facial Premium", category: "Faciales", duration: 90, price: 110000 },
-    { id: "s6", name: "Limpieza Profunda", category: "Faciales", duration: 60, price: 75000 },
-    { id: "s7", name: "Manicure", category: "Estética", duration: 45, price: 40000 },
-    { id: "s8", name: "Pedicure", category: "Estética", duration: 60, price: 50000 },
-    { id: "s9", name: "Depilación Piernas", category: "Estética", duration: 40, price: 45000 },
-    { id: "s10", name: "Aromaterapia", category: "Terapias", duration: 60, price: 70000 },
-    { id: "s11", name: "Reflexología", category: "Terapias", duration: 50, price: 60000 },
-  ];
+ ];
 
   // Datos de empleados
-  const employees: Employee[] = [
-    { id: "e1", name: "Ana María García", specialty: "Masajes", color: "#78D1BD" },
-    { id: "e2", name: "Carlos Rodríguez", specialty: "Masajes", color: "#60A5FA" },
-    { id: "e3", name: "Laura Martínez", specialty: "Faciales", color: "#FBBF24" },
-    { id: "e4", name: "David López", specialty: "Faciales", color: "#F87171" },
-    { id: "e5", name: "María González", specialty: "Estética", color: "#A78BFA" },
-    { id: "e6", name: "Roberto Silva", specialty: "Terapias", color: "#EC4899" },
-  ];
-
-  const clients = [
-    { id: 1, name: "Laura Sánchez", phone: "+57 310 123 4567" },
-    { id: 2, name: "Pedro Ramírez", phone: "+57 320 987 6543" },
-    { id: 3, name: "Sofia Torres", phone: "+57 315 555 1234" },
-    { id: 4, name: "Miguel Ángel Castro", phone: "+57 300 444 7890" },
-    { id: 5, name: "Carmen López", phone: "+57 311 222 3333" },
-  ];
-
-  // Estados
-  const [appointments, setAppointments] = useState<Appointment[]>([
-    {
-      id: 1,
-      clientName: "Laura Sánchez",
-      clientPhone: "+57 310 123 4567",
-      date: new Date(2025, 10, 17),
-      services: [
-        {
-          serviceId: "s1",
-          serviceName: "Masaje Relajante",
-          employeeId: "e1",
-          employeeName: "Ana María García",
-          duration: 60,
-          startTime: "10:00"
-        }
-      ],
-      totalDuration: 60,
-      startTime: "10:00",
-      endTime: "11:00",
-      status: "pending",
-      notes: "Cliente prefiere música suave"
-    },
-    {
-      id: 2,
-      clientName: "Pedro Ramírez",
-      clientPhone: "+57 320 987 6543",
-      date: new Date(2025, 10, 17),
-      services: [
-        {
-          serviceId: "s4",
-          serviceName: "Tratamiento Facial Básico",
-          employeeId: "e3",
-          employeeName: "Laura Martínez",
-          duration: 45,
-          startTime: "14:00"
-        },
-        {
-          serviceId: "s7",
-          serviceName: "Manicure",
-          employeeId: "e5",
-          employeeName: "María González",
-          duration: 45,
-          startTime: "15:00"
-        }
-      ],
-      totalDuration: 90,
-      startTime: "14:00",
-      endTime: "15:30",
-      status: "pending"
-    },
-    {
-      id: 3,
-      clientName: "Sofia Torres",
-      clientPhone: "+57 315 555 1234",
-      date: new Date(2025, 10, 18),
-      services: [
-        {
-          serviceId: "s2",
-          serviceName: "Masaje Deportivo",
-          employeeId: "e2",
-          employeeName: "Carlos Rodríguez",
-          duration: 90,
-          startTime: "11:00"
-        }
-      ],
-      totalDuration: 90,
-      startTime: "11:00",
-      endTime: "12:30",
-      status: "pending"
-    }
-  ]);
-
+  
   const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const today = new Date(2025, 10, 17);
     const day = today.getDay();
@@ -197,6 +101,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
   });
 
   const [selectedServices, setSelectedServices] = useState<AppointmentService[]>([]);
+  
   const [currentService, setCurrentService] = useState({
     serviceId: "",
     employeeId: ""
@@ -265,7 +170,9 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
   };
 
   const getEmployeesByCategory = (category: string) => {
-    return employees.filter(emp => emp.specialty === category);
+    const [employees, setEmployees] = useState<any[]>([]);
+
+    return employees.filter((emp: { specialty: string; }) => emp.specialty === category);
   };
 
   // Calcular tiempo final basado en tiempo de inicio y duración
@@ -283,6 +190,8 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
       toast.error("Por favor selecciona un servicio y un empleado");
       return;
     }
+
+    const [employees, setEmployees] = useState<any[]>([]);
 
     const service = services.find(s => s.id === currentService.serviceId);
     const employee = employees.find(e => e.id === currentService.employeeId);
@@ -338,22 +247,19 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
     const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0);
     const endTime = calculateEndTime(formData.startTime, totalDuration);
 
-    if (editingAppointment) {
-      setAppointments(appointments.map(apt =>
-        apt.id === editingAppointment.id
-          ? {
-              ...apt,
-              ...formData,
-              services: selectedServices,
-              totalDuration,
-              endTime,
-            }
-          : apt
-      ));
+
+if (editingAppointment) {
+  setAppointments(
+    appointments.map((apt) =>
+      apt.id === editingAppointment.id
+        ? { ...apt, ...formData, services: selectedServices, totalDuration, endTime }
+        : apt
+    )
+  );
       toast.success("Cita actualizada exitosamente");
     } else {
       const newAppointment: Appointment = {
-        id: Math.max(...appointments.map(a => a.id), 0) + 1,
+        id: Math.max(...appointments.map((a: { id: any; }) => a.id), 0) + 1,
         ...formData,
         services: selectedServices,
         totalDuration,
@@ -382,9 +288,19 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
     setCurrentService({ serviceId: "", employeeId: "" });
   };
 
+  
+interface Client {
+  id: string;
+  name: string;
+  phone: string;
+}
+
+const [clients, setClients] = useState<Client[]>([]);
+const [employees, setEmployees] = useState<Employee[]>([]);
+
   const handleEdit = (appointment: Appointment) => {
     setEditingAppointment(appointment);
-    const client = clients.find(c => c.name === appointment.clientName);
+    const client = clients.find((c: { name: string; }) => c.name === appointment.clientName);
     setFormData({
       clientId: client ? client.id.toString() : "",
       clientName: appointment.clientName,
@@ -430,7 +346,8 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
   };
 
   const handleClientChange = (clientId: string) => {
-    const client = clients.find(c => c.id.toString() === clientId);
+    const client = clients.find((c: { id: string; }) => c.id.toString() === clientId);
+
     if (client) {
       setFormData({
         ...formData,
@@ -924,7 +841,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                 <p className="text-xs text-gray-600">Servicios Contratados</p>
                 <div className="space-y-2">
                   {viewingAppointment.services.map((service, idx) => {
-                    const employee = employees.find(e => e.id === service.employeeId);
+                    const employee = employees.find((e: { id: string; }) => e.id === service.employeeId);
                     return (
                       <div
                         key={idx}
@@ -1055,23 +972,23 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
 
             {/* Cliente */}
             <div className="space-y-2">
-              <Label htmlFor="client">Cliente *</Label>
-              <Select value={formData.clientId} onValueChange={handleClientChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un cliente" />
-                </SelectTrigger>
-                <SelectContent>
-                  {clients.map(client => (
-                    <SelectItem key={client.id} value={client.id.toString()}>
-                      <div className="flex flex-col">
-                        <span>{client.name}</span>
-                        <span className="text-xs text-gray-500">{client.phone}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Label htmlFor="client">Cliente *</Label>
+            <Select value={formData.clientId} onValueChange={handleClientChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecciona un cliente" />
+              </SelectTrigger>
+              <SelectContent>
+                {clients.map((client) => (
+                  <SelectItem key={client.id} value={client.id.toString()}>
+                    <div className="flex flex-col">
+                      <span>{client.name}</span>
+                      <span className="text-xs text-gray-500">{client.phone}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
             {/* Fecha y Hora */}
             <div className="grid grid-cols-2 gap-4">
@@ -1182,7 +1099,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                 <div className="space-y-2 mt-3">
                   <p className="text-xs text-gray-600">Servicios Agregados:</p>
                   {selectedServices.map((service, idx) => {
-                    const employee = employees.find(e => e.id === service.employeeId);
+                    const employee = employees.find((e: { id: string; }) => e.id === service.employeeId);
                     const endTime = calculateEndTime(service.startTime, service.duration);
                     return (
                       <div
@@ -1299,4 +1216,8 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
       </AlertDialog>
     </div>
   );
+}
+
+function setAppointments(arg0: any) {
+  throw new Error("Function not implemented.");
 }

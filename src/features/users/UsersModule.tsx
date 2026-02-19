@@ -26,86 +26,24 @@ interface User {
   lastLogin: string;
 }
 
+interface Service {
+  id: string;
+  name: string;
+}
+
 interface UsersModuleProps {
   userRole: 'admin' | 'employee' | 'client';
 }
 
 export function UsersModule({ userRole }: UsersModuleProps) {
-  const availableRoles = [
-    "Administrador",
-    "Empleado",
-    "Recepcionista",
-    "Terapeuta",
-    "Cliente"
-  ];
+  const availableRoles: string[] = []
 
-  const availableServices = [
-    "Masaje Sueco",
-    "Masaje Tailandés",
-    "Tratamiento Facial",
-    "Aromaterapia",
-    "Manicure",
-    "Pedicure",
-    "Spa Bar Experience",
-    "Reflexología"
-  ];
+  
+  const availableServices: Service[] = [];
+
 
   const [users, setUsers] = useState<User[]>([
-    {
-      id: 1,
-      name: "María González",
-      email: "maria@highlife.com",
-      phone: "+57 310 111 2222",
-      role: "Administrador",
-      assignedServices: [],
-      isActive: true,
-      createdAt: "2024-01-10",
-      lastLogin: "2025-10-16"
-    },
-    {
-      id: 2,
-      name: "Carlos Rodríguez",
-      email: "carlos@highlife.com",
-      phone: "+57 320 333 4444",
-      role: "Terapeuta",
-      assignedServices: ["Masaje Sueco", "Masaje Tailandés", "Aromaterapia"],
-      isActive: true,
-      createdAt: "2024-02-15",
-      lastLogin: "2025-10-15"
-    },
-    {
-      id: 3,
-      name: "Ana Martínez",
-      email: "ana@highlife.com",
-      phone: "+57 315 555 6666",
-      role: "Empleado",
-      assignedServices: ["Tratamiento Facial", "Manicure", "Pedicure"],
-      isActive: true,
-      createdAt: "2024-03-20",
-      lastLogin: "2025-10-16"
-    },
-    {
-      id: 4,
-      name: "Patricia López",
-      email: "patricia@highlife.com",
-      phone: "+57 300 777 8888",
-      role: "Recepcionista",
-      assignedServices: [],
-      isActive: true,
-      createdAt: "2024-04-05",
-      lastLogin: "2025-10-14"
-    },
-    {
-      id: 5,
-      name: "Roberto Díaz",
-      email: "roberto@highlife.com",
-      phone: "+57 318 999 0000",
-      role: "Terapeuta",
-      assignedServices: ["Reflexología", "Spa Bar Experience"],
-      isActive: false,
-      createdAt: "2024-05-12",
-      lastLogin: "2025-09-20"
-    },
+    
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -130,7 +68,7 @@ export function UsersModule({ userRole }: UsersModuleProps) {
     phone: "",
     role: "",
     assignedServices: [] as string[],
-    image: "",
+    image: ""
   });
 
   const filteredUsers = users.filter(user => {
@@ -685,17 +623,17 @@ export function UsersModule({ userRole }: UsersModuleProps) {
                 <Label className="text-gray-900">Asignar Servicios</Label>
                 <div className="border border-gray-200 rounded-lg p-4 space-y-2 max-h-60 overflow-y-auto">
                   {availableServices.map((service) => (
-                    <div key={service} className="flex items-center space-x-2">
+                    <div key={service.id} className="flex items-center space-x-2">
                       <Checkbox
-                        id={service}
-                        checked={formData.assignedServices.includes(service)}
-                        onCheckedChange={() => handleServiceToggle(service)}
+                        id={service.id}
+                        checked={formData.assignedServices.includes(service.name)}
+                        onCheckedChange={() => handleServiceToggle(service.name)}
                       />
                       <label
-                        htmlFor={service}
+                        htmlFor={service.id}
                         className="text-sm text-gray-700 cursor-pointer select-none"
                       >
-                        {service}
+                        {service.name}
                       </label>
                     </div>
                   ))}

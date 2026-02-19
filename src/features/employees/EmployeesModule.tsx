@@ -62,114 +62,17 @@ interface EmployeesModuleProps {
 export function EmployeesModule({ userRole }: EmployeesModuleProps) {
   // Estados para empleados
   const [employees, setEmployees] = useState<Employee[]>([
-    {
-      id: 1,
-      name: "Ana María García",
-      email: "ana.garcia@highlifespa.com",
-      phone: "+57 310 234 5678",
-      specialty: "Masajes Terapéuticos",
-      image: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400",
-      isActive: true,
-      hiredDate: "2023-01-15",
-      totalAppointments: 156,
-      rating: 4.8,
-      availability: "Disponible"
-    },
-    {
-      id: 2,
-      name: "Carlos Rodríguez",
-      email: "carlos.rodriguez@highlifespa.com",
-      phone: "+57 320 345 6789",
-      specialty: "Tratamientos Faciales",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400",
-      isActive: true,
-      hiredDate: "2023-03-20",
-      totalAppointments: 132,
-      rating: 4.9,
-      availability: "Disponible"
-    },
-    {
-      id: 3,
-      name: "Laura Martínez",
-      email: "laura.martinez@highlifespa.com",
-      phone: "+57 315 456 7890",
-      specialty: "Manicure & Pedicure",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400",
-      isActive: true,
-      hiredDate: "2023-06-10",
-      totalAppointments: 98,
-      rating: 4.7,
-      availability: "En cita"
-    },
-    {
-      id: 4,
-      name: "David López",
-      email: "david.lopez@highlifespa.com",
-      phone: "+57 300 567 8901",
-      specialty: "Aromaterapia",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
-      isActive: false,
-      hiredDate: "2022-11-05",
-      totalAppointments: 45,
-      rating: 4.5,
-      availability: "Inactivo"
-    },
+    
   ]);
 
   // Estados para citas
   const [appointments, setAppointments] = useState<Appointment[]>([
-    {
-      id: 1,
-      employeeId: 1,
-      clientName: "María Rodríguez",
-      serviceName: "Masaje Sueco Premium",
-      date: "2025-10-17",
-      time: "10:00",
-      status: "confirmada",
-      notes: "Cliente prefiere aceites cítricos"
-    },
-    {
-      id: 2,
-      employeeId: 1,
-      clientName: "Pedro Sánchez",
-      serviceName: "Masaje de Piedras Calientes",
-      date: "2025-10-17",
-      time: "14:00",
-      status: "pendiente",
-      notes: ""
-    },
-    {
-      id: 3,
-      employeeId: 2,
-      clientName: "Sofia Torres",
-      serviceName: "Tratamiento Facial Hidratante",
-      date: "2025-10-18",
-      time: "11:00",
-      status: "confirmada",
-      notes: "Piel sensible"
-    },
+    
   ]);
 
   // Estados para novedades
   const [news, setNews] = useState<News[]>([
-    {
-      id: 1,
-      employeeId: 1,
-      title: "Nuevo protocolo de masajes",
-      content: "Se ha implementado un nuevo protocolo para masajes deportivos que incluye técnicas avanzadas de recuperación muscular.",
-      category: "Protocolo",
-      date: "2025-10-15",
-      isPublished: true
-    },
-    {
-      id: 2,
-      employeeId: 2,
-      title: "Productos orgánicos disponibles",
-      content: "Ahora contamos con una línea completa de productos orgánicos certificados para tratamientos faciales.",
-      category: "Productos",
-      date: "2025-10-14",
-      isPublished: true
-    },
+    
   ]);
 
   // Estados de UI
