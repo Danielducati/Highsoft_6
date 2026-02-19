@@ -3,24 +3,22 @@ const router = express.Router();
 const { pool } = require("../db");
 
 router.get("/", async (req, res) => {
-try {
+  try {
     const connection = await pool;
 
     const result = await connection.request().query(`
-    SELECT 
-        PK_id_rol,
-        Nombre,
-        Estado
-    FROM Roles
-    ORDER BY Nombre
+      SELECT 
+        PK_id_usuario,
+      FROM Usuarios
+      ORDER BY Nombre
     `);
 
     res.json(result.recordset);
 
-} catch (error) {
-    console.error("ERROR roles:", error);
-    res.status(500).json({ error: "Error al obtener roles" });
-}
+  } catch (error) {
+    console.error("ERROR users:", error);
+    res.status(500).json({ error: "Error al obtener usuarios" });
+  }
 });
 
 module.exports = router;
