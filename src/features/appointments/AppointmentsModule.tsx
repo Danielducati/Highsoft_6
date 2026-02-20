@@ -111,40 +111,63 @@ function calculateEndTime(startTime: string, durationMinutes: number): string {
  *   ]
  * }
  */
-function mapApiToAppointment(item: any): Appointment {
-  const startTime: string = (item.Horario || "00:00").slice(0, 5);
-  const duration: number = item.duracion_total ?? 60;
-  const endTime = calculateEndTime(startTime, duration);
 
+function mapApiToAppointment(item: any): Appointment {
+  // Horario ya viene como "14:00" gracias al CONVERT del backend
+  const startTime: string = (item.Horario ?? "00:00").slice(0, 5);
+
+  // Calcular duración total sumando los servicios del detalle
+  const totalDuration: number = Array.isArray(item.servicios) && item.servicios.length > 0
+    ? item.servicios.reduce((sum: number, s: any) => sum + (s.duration ?? 60), 0)
+    : 60;
+
+  const endTime = calculateEndTime(startTime, totalDuration);
+
+  // Mapear servicios recalculando startTime secuencial
+  let cursor = startTime;
   const services: AppointmentService[] = Array.isArray(item.servicios) && item.servicios.length > 0
-    ? item.servicios
+    ? item.servicios.map((s: any) => {
+        const svc: AppointmentService = {
+          serviceId:    s.serviceId   ?? "",
+          serviceName:  s.serviceName ?? "Servicio",
+          employeeId:   s.employeeId  ?? "",
+          employeeName: s.employeeName ?? "Empleado",
+          duration:     s.duration    ?? 60,
+          startTime:    cursor,
+        };
+        cursor = calculateEndTime(cursor, svc.duration);
+        return svc;
+      })
     : [{
-        serviceId: String(item.FK_id_servicio ?? ""),
-        serviceName: item.servicio_nombre ?? "Servicio",
-        employeeId: String(item.FK_id_empleado ?? ""),
+        serviceId:    "",
+        serviceName:  "Sin servicio",
+        employeeId:   String(item.empleado_id ?? ""),
         employeeName: item.empleado_nombre ?? "Empleado",
-        duration,
+        duration:     60,
         startTime,
       }];
 
-  const rawStatus = (item.Estado ?? "Pendiente").toLowerCase();
+  // Normalizar estado (español → inglés)
+  const estadoRaw = (item.Estado ?? "Pendiente").toLowerCase();
   const status: Appointment["status"] =
-    rawStatus === "cancelada" || rawStatus === "cancelled"
-      ? "cancelled"
-      : rawStatus === "completada" || rawStatus === "completed"
-      ? "completed"
-      : "pending";
+    estadoRaw === "cancelada"  || estadoRaw === "cancelled"  ? "cancelled"  :
+    estadoRaw === "completada" || estadoRaw === "completed"  ? "completed"  :
+    "pending";
+
+  // Fecha: viene como "2026-02-20" → new Date sin desfase de zona horaria
+  const [y, m, d] = (item.Fecha ?? "2000-01-01").split("-").map(Number);
+  const date = new Date(y, m - 1, d);   // mes base 0, sin UTC
 
   return {
-    id: item.PK_id_cita,
-    clientName: item.cliente_nombre ?? "Cliente",
-    clientPhone: item.cliente_telefono ?? "",
-    date: new Date(item.Fecha),
+    id:           item.PK_id_cita,
+    clientName:   item.cliente_nombre   ?? "Sin cliente",
+    clientPhone:  item.cliente_telefono ?? "",
+    date,
     startTime,
     endTime,
     status,
     services,
-    totalDuration: duration,
+    totalDuration,
     notes: item.Notas ?? "",
   };
 }
