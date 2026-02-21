@@ -25,13 +25,6 @@ import { UsersModule } from "../features/users/UsersModule";
 import { RolesModule } from "../features/roles/RolesModule";
 import { SettingsModule } from "../features/settings/SettingsModule";
 
-
-// Contexts
-import { AppointmentsProvider } from "../shared/contexts/AppointmentsContext";
-
-
-
-
 // UI global
 import { Toaster } from "sonner";
 
@@ -126,37 +119,35 @@ export default function App() {
   }
 
   return (
-    <AppointmentsProvider>
-      <div className="flex h-screen overflow-hidden">
-        <Sidebar 
-          activePage={currentPage}
-          onNavigate={handleNavigate}
-          onLogout={handleLogout}
-          userRole={userRole}
-        />
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar 
+        activePage={currentPage}
+        onNavigate={handleNavigate}
+        onLogout={handleLogout}
+        userRole={userRole}
+      />
+      
+      <div className="flex-1 flex flex-col ml-64">
+        <Header userRole={userRole} />
         
-        <div className="flex-1 flex flex-col ml-64">
-          <Header userRole={userRole} />
-          
-          <main className="flex-1 overflow-y-auto bg-[#F7F9FC] p-8">
-            {currentPage === 'dashboard' && <Dashboard />}
-            {currentPage === 'services' && <ServicesModule userRole={userRole} />}
-            {currentPage === 'categories' && <CategoriesModule userRole={userRole} />}
-            {currentPage === 'news' && <NewsModule userRole={userRole} />}
-            {currentPage === 'appointments' && <AppointmentsModule userRole={userRole} />}
-            {currentPage === 'schedules' && <SchedulesModule userRole={userRole} />}
-            {currentPage === 'quotations' && <QuotationsModule userRole={userRole} />}
-            {currentPage === 'sales' && <SalesModule userRole={userRole} />}
-            {currentPage === 'clients' && <ClientsModule userRole={userRole} />}
-            {currentPage === 'employees' && <EmployeesModule userRole={userRole} />}
-            {currentPage === 'users' && <UsersModule userRole={userRole} />}
-            {currentPage === 'roles' && <RolesModule userRole={userRole} />}
-            {currentPage === 'settings' && <SettingsModule userRole={userRole} />}
-          </main>
-        </div>
-
-        <Toaster />
+        <main className="flex-1 overflow-y-auto bg-[#F7F9FC] p-8">
+          {currentPage === 'dashboard' && <Dashboard />}
+          {currentPage === 'services' && <ServicesModule userRole={userRole} />}
+          {currentPage === 'categories' && <CategoriesModule userRole={userRole} />}
+          {currentPage === 'news' && <NewsModule userRole={userRole} />}
+          {currentPage === 'appointments' && <AppointmentsModule userRole={userRole} />}
+          {currentPage === 'schedules' && <SchedulesModule userRole={userRole} />}
+          {currentPage === 'quotations' && <QuotationsModule userRole={userRole} />}
+          {currentPage === 'sales' && <SalesModule userRole={userRole} />}
+          {currentPage === 'clients' && <ClientsModule userRole={userRole} />}
+          {currentPage === 'employees' && <EmployeesModule userRole={userRole} />}
+          {currentPage === 'users' && <UsersModule userRole={userRole} />}
+          {currentPage === 'roles' && <RolesModule userRole={userRole} />}
+          {currentPage === 'settings' && <SettingsModule userRole={userRole} />}
+        </main>
       </div>
-    </AppointmentsProvider>
+
+      <Toaster />
+    </div>
   );
 }
