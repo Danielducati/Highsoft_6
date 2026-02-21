@@ -259,6 +259,14 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
 
   const isToday = (date: Date) => date.toDateString() === TODAY.toDateString();
 
+  const isPastDate = (date: Date) => {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d < hoy;
+};
+
   // ── Helpers UI ──
   const getStatusColor = (status: string) => ({
     pending: "bg-amber-100 text-amber-700",
@@ -272,8 +280,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
     completed: "Completada",
   }[status] ?? status);
 
-  const getEmployeesByCategory = (category: string) =>
-    employees.filter(e => e.specialty === category);
+  const getEmployeesByCategory = (_category: string) => employees;
 
   // ── Servicios del formulario ──
   const handleAddService = () => {
@@ -323,47 +330,69 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
   };
 
   const handleCreateOrUpdate = async () => {
-    if (!formData.clientId || !formData.startTime || selectedServices.length === 0) {
-      toast.error("Completa todos los campos requeridos");
+  if (!formData.clientId || !formData.startTime || selectedServices.length === 0) {
+    toast.error("Selecciona un cliente, hora y al menos un servicio");
+    return;
+  }
+
+  // Verificar que todos los servicios tienen empleado asignado
+  const sinEmpleado = selectedServices.some(s => !s.employeeId);
+  if (sinEmpleado) {
+    toast.error("Todos los servicios deben tener un empleado asignado");
+    return;
+  }
+
+  // Construir el payload que espera el backend
+  const payload = {
+    cliente: Number(formData.clientId),
+    fecha:   formData.date.toISOString().split("T")[0],
+    hora:    formData.startTime,
+    notas:   formData.notes || null,
+    // El empleado_principal lo toma el backend del primer servicio
+    servicios: selectedServices.map(s => ({
+      servicio:         Number(s.serviceId),
+      empleado_usuario: Number(s.employeeId), // PK_id_empleado del empleado
+      precio:           null,                 // opcional, agregar si lo tienes
+      detalle:          s.serviceName,
+    })),
+  };
+
+  try {
+    const method = editingAppointment ? "PUT" : "POST";
+    const url = editingAppointment
+      ? `${API_BASE}/api/appointments/${editingAppointment.id}`
+      : `${API_BASE}/api/appointments`;
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const fechaCita = new Date(formData.date);
+    fechaCita.setHours(0, 0, 0, 0);
+
+    if (fechaCita < hoy) {
+      toast.error("No puedes crear citas en fechas pasadas");
       return;
     }
+      
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-    // Ajusta el payload a lo que espera tu backend
-    const payload = {
-      cliente: Number(formData.clientId),
-      fecha: formData.date.toISOString().split("T")[0],
-      hora: formData.startTime,
-      notas: formData.notes,
-      servicios: selectedServices.map(s => ({
-        empleado: s.employeeId,
-        servicio: s.serviceId,
-        duracion: s.duration,
-        horaInicio: s.startTime,
-      })),
-    };
-
-    try {
-      const method = editingAppointment ? "PUT" : "POST";
-      const url = editingAppointment
-        ? `${API_BASE}/api/appointments/${editingAppointment.id}`
-        : `${API_BASE}/api/appointments`;
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error("Error al guardar");
-
-      toast.success(editingAppointment ? "Cita actualizada" : "Cita creada");
-      await reloadAppointments();
-      resetForm();
-    } catch (err) {
-      console.error(err);
-      toast.error("Error al guardar la cita");
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || "Error al guardar");
     }
-  };
+
+    toast.success(editingAppointment ? "Cita actualizada" : "Cita creada exitosamente");
+    await reloadAppointments();
+    resetForm();
+
+  } catch (err: any) {
+    console.error(err);
+    toast.error(err.message ?? "Error al guardar la cita");
+  }
+};
 
   const handleDelete = async () => {
     if (!appointmentToDelete) return;
@@ -649,6 +678,8 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
             </CardContent>
           </Card>
 
+
+{/* Colores de los estados de la cita */}
           {/* Leyenda */}
           <Card className="border-gray-200 shadow-sm">
             <CardContent className="p-3">
@@ -656,7 +687,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                 <span className="text-xs text-gray-600">Estados:</span>
                 {[
                   { color: "#F59E0B", label: "Pendiente" },
-                  { color: "#3B82F6", label: "Completada" },
+                  { color: "#23f83f", label: "Completada" },
                   { color: "#EF4444", label: "Cancelada" },
                 ].map(({ color, label }) => (
                   <div key={label} className="flex items-center gap-2">
@@ -676,7 +707,10 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                 <div className="grid grid-cols-8 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 sticky top-0 z-10">
                   <div className="p-3 border-r border-gray-200 text-gray-900">Hora</div>
                   {getWeekDates().map((date, idx) => (
-                    <div key={idx} className={`p-3 border-r border-gray-200 last:border-r-0 text-center ${isToday(date) ? "bg-[#78D1BD]/10" : ""}`}>
+                    <div key={idx} className={`p-3 border-r border-gray-200 last:border-r-0 text-center ${
+                      isToday(date) ? "bg-[#78D1BD]/10" : 
+                      isPastDate(date) ? "bg-gray-100"     : ""
+                    }`}>
                       <div className="text-sm text-gray-600">{WEEK_DAYS[idx]}</div>
                       <div className={`mt-0.5 ${isToday(date) ? "text-[#78D1BD]" : "text-gray-900"}`}>{date.getDate()}</div>
                     </div>
@@ -697,10 +731,18 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                       return (
                         <div
                           key={dIdx}
-                          className={`border-r border-gray-200 last:border-r-0 relative min-h-[50px] ${isToday(date) ? "bg-[#78D1BD]/5" : ""} ${!isOccupied ? "hover:bg-[#A78BFA]/10 cursor-pointer transition-colors group" : ""}`}
+                          className={`border-r border-gray-200 last:border-r-0 relative min-h-[50px] ${
+                            isToday(date)
+                              ? "bg-[#78D1BD]/5"
+                              : isPastDate(date)
+                              ? "bg-gray-100"        // ← celdas pasadas más oscuras
+                              : ""
+                          } ${!isOccupied && !isPastDate(date) ? "hover:bg-[#A78BFA]/10 cursor-pointer transition-colors group" : ""} ${
+                            isPastDate(date) ? "cursor-not-allowed" : ""
+                          }`}
                           style={{ height: "50px" }}
                           onClick={() => {
-                            if (!isOccupied) {
+                            if (!isOccupied && !isPastDate(date)) {  // ← agrega !isPastDate(date)
                               setFormData({ ...emptyForm, date, startTime: time });
                               setEditingAppointment(null);
                               setSelectedServices([]);
@@ -898,6 +940,7 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
                 <Label>Fecha *</Label>
                 <Input
                   type="date"
+                  min={new Date().toISOString().split("T")[0]} //Linea para que no deje escoger fechas pasadas
                   value={formData.date.toISOString().split("T")[0]}
                   onChange={e => setFormData(prev => ({ ...prev, date: new Date(e.target.value + "T00:00:00") }))}
                 />

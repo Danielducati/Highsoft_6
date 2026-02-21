@@ -7,41 +7,27 @@ const COLORS = [
   "#A78BFA", "#EC4899", "#34D399", "#FB923C",
 ];
 
-// GET /employees
-// Trae empleados con las categorías reales de sus servicios asignados
-// via Empleado_Servicio → Servicio → Categoria_servicios
+// GET /employees — todos los empleados activos
+// specialty se deja vacío para que el frontend muestre todos sin filtrar
 router.get("/", async (req, res) => {
   try {
     const connection = await pool;
 
     const result = await connection.request().query(`
       SELECT 
-        e.PK_id_empleado              AS id,
-        e.nombre + ' ' + e.apellido   AS name,
-        e.correo,
-        e.telefono,
-        e.Estado                      AS estado,
-        ISNULL(
-          (
-            SELECT DISTINCT cs.Nombre + ','
-            FROM Empleado_Servicio es2
-            JOIN Servicio s2
-              ON s2.PK_id_servicio = es2.FK_id_servicio
-            JOIN Categoria_servicios cs
-              ON cs.PK_id_categoria_servicios = s2.FK_categoria_servicios
-            WHERE es2.FK_id_empleado = e.PK_id_empleado
-            FOR XML PATH('')
-          ),
-          ISNULL(e.especialidad, 'General')
-        ) AS specialty
-      FROM Empleado e
-      WHERE e.Estado = 'Activo'
-      ORDER BY e.nombre
+        PK_id_empleado              AS id,
+        nombre + ' ' + apellido     AS name,
+        ISNULL(especialidad, '')    AS specialty,
+        correo,
+        telefono,
+        Estado                      AS estado
+      FROM Empleado
+      WHERE Estado = 'Activo'
+      ORDER BY nombre
     `);
 
     const empleados = result.recordset.map((emp, idx) => ({
       ...emp,
-      specialty: emp.specialty ? emp.specialty.replace(/,\s*$/, "").trim() : "General",
       color: COLORS[idx % COLORS.length],
     }));
 
