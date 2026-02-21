@@ -12,6 +12,7 @@ const clientRoutes      = require('./routes/clients.js');
 const rolesRoutes       = require('./routes/roles.js');
 const salesRoutes = require("./routes/sales");
 const categoriesRouter = require("./routes/categories"); // ajusta la ruta
+const usersRoutes = require("./routes/users");
 
 // Rutas de escritura (POST, PUT, PATCH, DELETE)
 // Usamos el mismo router pero bajo /api/appointments
@@ -26,6 +27,7 @@ app.use('/clients', clientRoutes);
 app.use("/roles", rolesRoutes);
 app.use("/sales", salesRoutes);
 app.use("/categories", categoriesRouter);
+app.use("/users", usersRoutes);
 
 app.listen(3001, () => {
 console.log("🔥 Backend corriendo en puerto 3001");

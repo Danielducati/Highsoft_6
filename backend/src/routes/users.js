@@ -8,9 +8,14 @@ router.get("/", async (req, res) => {
 
     const result = await connection.request().query(`
       SELECT 
-        PK_id_usuario,
+        PK_id_usuario AS id,
+        Correo,
+        contrasena,
+        estado,
+        FK_id_rol AS rol
       FROM Usuarios
-      ORDER BY Nombre
+      WHERE estado = 'Activo'
+      ORDER BY Correo
     `);
 
     res.json(result.recordset);
