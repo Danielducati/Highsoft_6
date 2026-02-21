@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Key, ReactNode, useState } from "react";
 import { Card, CardContent } from "../../shared/ui/card";
 import { Button } from "../../shared/ui/button";
 import { Label } from "../../shared/ui/label";
@@ -39,24 +39,14 @@ interface SchedulesModuleProps {
 
 export function SchedulesModule({ userRole }: SchedulesModuleProps) {
   // Datos de empleados
-  const employees: Employee[] = [
-    { id: "e1", name: "Ana María García", specialty: "Masajes" },
-    { id: "e2", name: "Carlos Rodríguez", specialty: "Faciales" },
-    { id: "e3", name: "Laura Martínez", specialty: "Estética" },
-    { id: "e4", name: "David López", specialty: "Terapias" },
-    { id: "e5", name: "María González", specialty: "Masajes" },
-    { id: "e6", name: "Roberto Silva", specialty: "Terapias" },
-  ];
+  const employees: Employee[] = [ ];
 
-  const weekDaysLabels = [
-    { id: 0, label: "Lunes", short: "L" },
-    { id: 1, label: "Martes", short: "M" },
-    { id: 2, label: "Miércoles", short: "X" },
-    { id: 3, label: "Jueves", short: "J" },
-    { id: 4, label: "Viernes", short: "V" },
-    { id: 5, label: "Sábado", short: "S" },
-    { id: 6, label: "Domingo", short: "D" },
-  ];
+  const weekDaysLabels: {
+    id: Key | null | undefined;
+    short: ReactNode; label: string; value: string 
+}[] = [];
+
+
 
   // Función para obtener el lunes de una fecha
   const getMondayOfWeek = (date: Date) => {
@@ -78,68 +68,7 @@ export function SchedulesModule({ userRole }: SchedulesModuleProps) {
   };
 
   // Estados
-  const [schedules, setSchedules] = useState<WeeklySchedule[]>([
-    { 
-      id: 1, 
-      employeeId: "e1", 
-      employeeName: "Ana María García", 
-      weekStartDate: new Date(2025, 10, 17), // 17 Nov 2025 (Lunes)
-      daySchedules: [
-        { dayIndex: 0, startTime: "09:00", endTime: "17:00" }, // Lun
-        { dayIndex: 2, startTime: "09:00", endTime: "17:00" }, // Mie
-        { dayIndex: 4, startTime: "09:00", endTime: "14:00" }, // Vie
-      ],
-      isActive: true 
-    },
-    { 
-      id: 2, 
-      employeeId: "e2", 
-      employeeName: "Carlos Rodríguez", 
-      weekStartDate: new Date(2025, 10, 17),
-      daySchedules: [
-        { dayIndex: 1, startTime: "10:00", endTime: "18:00" }, // Mar
-        { dayIndex: 3, startTime: "10:00", endTime: "19:00" }, // Jue
-      ],
-      isActive: true 
-    },
-    { 
-      id: 3, 
-      employeeId: "e3", 
-      employeeName: "Laura Martínez", 
-      weekStartDate: new Date(2025, 10, 17),
-      daySchedules: [
-        { dayIndex: 0, startTime: "08:00", endTime: "16:00" }, // Lun
-        { dayIndex: 1, startTime: "08:00", endTime: "16:00" }, // Mar
-        { dayIndex: 2, startTime: "08:00", endTime: "16:00" }, // Mie
-        { dayIndex: 3, startTime: "08:00", endTime: "16:00" }, // Jue
-        { dayIndex: 4, startTime: "08:00", endTime: "13:00" }, // Vie
-      ],
-      isActive: true 
-    },
-    { 
-      id: 4, 
-      employeeId: "e4", 
-      employeeName: "David López", 
-      weekStartDate: new Date(2025, 10, 24), // 24 Nov 2025
-      daySchedules: [
-        { dayIndex: 2, startTime: "11:00", endTime: "19:00" }, // Mie
-        { dayIndex: 3, startTime: "11:00", endTime: "19:00" }, // Jue
-        { dayIndex: 4, startTime: "11:00", endTime: "18:00" }, // Vie
-      ],
-      isActive: true 
-    },
-    { 
-      id: 5, 
-      employeeId: "e5", 
-      employeeName: "María González", 
-      weekStartDate: new Date(2025, 10, 17),
-      daySchedules: [
-        { dayIndex: 5, startTime: "09:00", endTime: "15:00" }, // Sab
-        { dayIndex: 6, startTime: "09:00", endTime: "14:00" }, // Dom
-      ],
-      isActive: true 
-    },
-  ]);
+  const [schedules, setSchedules] = useState<WeeklySchedule[]>([ ]);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingSchedule, setEditingSchedule] = useState<WeeklySchedule | null>(null);
@@ -209,7 +138,7 @@ export function SchedulesModule({ userRole }: SchedulesModuleProps) {
         return;
       }
       if (daySchedule.startTime >= daySchedule.endTime) {
-        const dayLabel = weekDaysLabels[daySchedule.dayIndex].label;
+        const dayLabel = weekDaysLabels[daySchedule.dayIndex]?.label || "día";
         toast.error(`La hora de inicio debe ser menor a la hora de fin en ${dayLabel}`);
         return;
       }
@@ -505,7 +434,7 @@ export function SchedulesModule({ userRole }: SchedulesModuleProps) {
                                       variant="secondary" 
                                       className={`text-xs ${getDayBadgeColor(daySchedule.dayIndex)}`}
                                     >
-                                      {day.short}
+                                      {day?.short || "Día"}
                                     </Badge>
                                     <span className="text-xs text-gray-500">
                                       {date.getDate()}/{date.getMonth() + 1}

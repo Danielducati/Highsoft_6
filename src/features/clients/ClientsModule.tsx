@@ -34,68 +34,7 @@ interface ClientsModuleProps {
 }
 
 export function ClientsModule({ userRole }: ClientsModuleProps) {
-  const [clients, setClients] = useState<Client[]>([
-    {
-      id: 1,
-      name: "Laura Sánchez",
-      email: "laura@ejemplo.com",
-      phone: "+57 310 123 4567",
-      address: "Calle Principal 123, Bogotá",
-      isActive: true,
-      registeredDate: "2024-01-15",
-      totalVisits: 24,
-      totalSpent: 2880,
-      lastVisit: "2025-10-15"
-    },
-    {
-      id: 2,
-      name: "Pedro Ramírez",
-      email: "pedro@ejemplo.com",
-      phone: "+57 320 987 6543",
-      address: "Avenida Central 456, Medellín",
-      isActive: true,
-      registeredDate: "2024-03-20",
-      totalVisits: 18,
-      totalSpent: 2160,
-      lastVisit: "2025-10-14"
-    },
-    {
-      id: 3,
-      name: "Sofia Torres",
-      email: "sofia@ejemplo.com",
-      phone: "+57 315 555 1234",
-      address: "Boulevard Norte 789, Cali",
-      isActive: true,
-      registeredDate: "2024-06-10",
-      totalVisits: 12,
-      totalSpent: 1440,
-      lastVisit: "2025-10-10"
-    },
-    {
-      id: 4,
-      name: "Miguel Ángel López",
-      email: "miguel@ejemplo.com",
-      phone: "+57 300 444 7890",
-      address: "Calle Sur 321, Cartagena",
-      isActive: false,
-      registeredDate: "2023-11-05",
-      totalVisits: 6,
-      totalSpent: 720,
-      lastVisit: "2025-08-20"
-    },
-    {
-      id: 5,
-      name: "Carmen López",
-      email: "carmen@ejemplo.com",
-      phone: "+57 311 222 3333",
-      address: "Avenida Norte 555, Barranquilla",
-      isActive: true,
-      registeredDate: "2024-08-12",
-      totalVisits: 15,
-      totalSpent: 1800,
-      lastVisit: "2025-10-12"
-    },
-  ]);
+  const [clients, setClients] = useState<Client[]>([ ]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");

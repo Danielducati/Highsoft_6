@@ -10,6 +10,7 @@ import { Badge } from "../../shared/ui/badge";
 import { Textarea } from "../../shared/ui/textarea";
 import { Plus, ChevronLeft, ChevronRight, Clock, User, Trash2, Edit, CalendarIcon, X, Search, Filter, List, Calendar, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { ClientsModule } from "../clients/ClientsModule";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -442,17 +443,17 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
   };
 
   // ── Form helpers ──
-  const resetForm = () => {
-    setIsDialogOpen(false);
-    setEditingAppointment(null);
-    setFormData(emptyForm);
-    setSelectedServices([]);
-    setCurrentService({ serviceId: "", employeeId: "" });
-  };
+const resetForm = () => {
+  setIsDialogOpen(false);
+  setEditingAppointment(null);
+  setFormData(emptyForm);
+  setSelectedServices([]);
+  setCurrentService({ serviceId: "", employeeId: "" });
+};
 
-  const handleEdit = (appointment: Appointment) => {
+const handleEdit = (appointment: Appointment) => {
     setEditingAppointment(appointment);
-    const client = clients.find(c => c.name === appointment.clientName);
+    const client = clients.find((c: { name: string; }) => c.name === appointment.clientName);
     setFormData({
       clientId: client ? String(client.id) : "",
       clientName: appointment.clientName,
@@ -1093,4 +1094,8 @@ export function AppointmentsModule({ userRole }: AppointmentsModuleProps) {
 
     </div>
   );
+}
+
+function setAppointments(arg0: any) {
+  throw new Error("Function not implemented.");
 }

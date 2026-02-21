@@ -33,70 +33,9 @@ interface RolesModuleProps {
 }
 
 export function RolesModule({ userRole }: RolesModuleProps) {
-  const availablePermissions: Permission[] = [
-    { id: 'dashboard_view', name: 'Ver Dashboard', category: 'Dashboard' },
-    { id: 'services_view', name: 'Ver Servicios', category: 'Servicios' },
-    { id: 'services_create', name: 'Crear Servicios', category: 'Servicios' },
-    { id: 'services_edit', name: 'Editar Servicios', category: 'Servicios' },
-    { id: 'services_delete', name: 'Eliminar Servicios', category: 'Servicios' },
-    { id: 'categories_view', name: 'Ver Categorías', category: 'Categorías' },
-    { id: 'categories_manage', name: 'Gestionar Categorías', category: 'Categorías' },
-    { id: 'appointments_view', name: 'Ver Citas', category: 'Citas' },
-    { id: 'appointments_create', name: 'Crear Citas', category: 'Citas' },
-    { id: 'appointments_edit', name: 'Editar Citas', category: 'Citas' },
-    { id: 'appointments_cancel', name: 'Cancelar Citas', category: 'Citas' },
-    { id: 'clients_view', name: 'Ver Clientes', category: 'Clientes' },
-    { id: 'clients_create', name: 'Crear Clientes', category: 'Clientes' },
-    { id: 'clients_edit', name: 'Editar Clientes', category: 'Clientes' },
-    { id: 'clients_delete', name: 'Eliminar Clientes', category: 'Clientes' },
-    { id: 'sales_view', name: 'Ver Ventas', category: 'Ventas' },
-    { id: 'sales_create', name: 'Crear Ventas', category: 'Ventas' },
-    { id: 'reports_view', name: 'Ver Reportes', category: 'Reportes' },
-    { id: 'reports_export', name: 'Exportar Reportes', category: 'Reportes' },
-    { id: 'users_view', name: 'Ver Usuarios', category: 'Usuarios' },
-    { id: 'users_manage', name: 'Gestionar Usuarios', category: 'Usuarios' },
-    { id: 'roles_view', name: 'Ver Roles', category: 'Roles' },
-    { id: 'roles_manage', name: 'Gestionar Roles', category: 'Roles' },
-  ];
+  const availablePermissions: Permission[] = [];
 
-  const [roles, setRoles] = useState<Role[]>([
-    {
-      id: 1,
-      name: "Administrador",
-      description: "Acceso completo al sistema",
-      permissions: availablePermissions.map(p => p.id),
-      isActive: true,
-      createdAt: "2024-01-10",
-      usersCount: 3
-    },
-    {
-      id: 2,
-      name: "Empleado",
-      description: "Acceso a gestión de citas y clientes",
-      permissions: ['dashboard_view', 'appointments_view', 'appointments_create', 'appointments_edit', 'clients_view', 'services_view'],
-      isActive: true,
-      createdAt: "2024-01-15",
-      usersCount: 12
-    },
-    {
-      id: 3,
-      name: "Recepcionista",
-      description: "Gestión de citas y atención al cliente",
-      permissions: ['appointments_view', 'appointments_create', 'clients_view', 'clients_create'],
-      isActive: true,
-      createdAt: "2024-02-01",
-      usersCount: 5
-    },
-    {
-      id: 4,
-      name: "Cliente Premium",
-      description: "Cliente con beneficios especiales",
-      permissions: ['appointments_view', 'appointments_create'],
-      isActive: false,
-      createdAt: "2024-03-10",
-      usersCount: 0
-    },
-  ]);
+  const [roles, setRoles] = useState<Role[]>([]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);

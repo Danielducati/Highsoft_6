@@ -10,18 +10,23 @@ const employeeRoutes    = require('./routes/employees.js');
 const serviceRoutes     = require('./routes/services.js');
 const clientRoutes      = require('./routes/clients.js');
 const rolesRoutes       = require('./routes/roles.js');
-
-// Rutas GET (lectura — las usa el frontend para cargar datos)
-app.use('/appointments', appointmentRoutes);
-app.use('/employees',    employeeRoutes);
-app.use('/services',     serviceRoutes);
-app.use('/clients',      clientRoutes);
-app.use('/roles',        rolesRoutes);
+const salesRoutes = require("./routes/sales");
+const categoriesRouter = require("./routes/categories"); // ajusta la ruta
 
 // Rutas de escritura (POST, PUT, PATCH, DELETE)
 // Usamos el mismo router pero bajo /api/appointments
 app.use('/api/appointments', appointmentRoutes);
 
+
+// Rutas GET (lectura — las usa el frontend para cargar datos)
+app.use('/appointments', appointmentRoutes);
+app.use('/employees', employeeRoutes);
+app.use('/services', serviceRoutes);
+app.use('/clients', clientRoutes);
+app.use("/roles", rolesRoutes);
+app.use("/sales", salesRoutes);
+app.use("/categories", categoriesRouter);
+
 app.listen(3001, () => {
-    console.log("🔥 Backend corriendo en puerto 3001");
+console.log("🔥 Backend corriendo en puerto 3001");
 });
