@@ -27,14 +27,7 @@ interface CategoriesModuleProps {
 }
 
 export function CategoriesModule({ userRole }: CategoriesModuleProps) {
-  const [categories, setCategories] = useState<Category[]>([
-    { id: 1, name: "Masajes", description: "Tratamientos de masajes terapéuticos", servicesCount: 8, isActive: true, color: "#78D1BD" },
-    { id: 2, name: "Faciales", description: "Cuidado y tratamiento facial", servicesCount: 12, isActive: true, color: "#EAD8B1" },
-    { id: 3, name: "Estética", description: "Servicios de belleza general", servicesCount: 15, isActive: true, color: "#A8E6CF" },
-    { id: 4, name: "Relajación", description: "Terapias de relajación y meditación", servicesCount: 6, isActive: true, color: "#FFD3B5" },
-    { id: 5, name: "Bar", description: "Bebidas y snacks saludables", servicesCount: 20, isActive: true, color: "#FFAAA6" },
-    { id: 6, name: "Sauna", description: "Tratamientos de calor y vapor", servicesCount: 4, isActive: false, color: "#FF8C94" },
-  ]);
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -53,6 +46,9 @@ export function CategoriesModule({ userRole }: CategoriesModuleProps) {
     description: "",
     color: "#78D1BD",
   });
+
+  
+const [categories, setCategories] = useState<any[]>([]);
 
   const filteredCategories = categories.filter(category => 
     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
